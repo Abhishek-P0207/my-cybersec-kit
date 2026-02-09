@@ -14,9 +14,7 @@ function isNotValid(url: string){
 export async function POST(request: NextRequest){
     try {
         const form = await request.formData();
-        // const { url } = body;
-        // console.log(request)
-        const url = form.get('url');
+        const url = form.get('url') as string;
         
         if(!url || isNotValid(url)){
             return NextResponse.json(
@@ -38,7 +36,7 @@ export async function POST(request: NextRequest){
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'User-Agent': 'phishtank/security-toolkit'
                 },
-                timeout: 10000 // 10 second timeout
+                timeout: 10000 // 10 second
             }
         );
 
