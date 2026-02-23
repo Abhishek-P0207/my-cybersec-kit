@@ -47,10 +47,10 @@ function sanitizeRepoUrl(repoUrl: string): string {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { repoUrl, token } = body;
+    const { url, token } = body;
 
     // Validate input exists
-    if (!repoUrl || typeof repoUrl !== 'string') {
+    if (!url || typeof url !== 'string') {
       return NextResponse.json(
         { error: 'repoUrl is required and must be a string' },
         { status: 400 }
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     }
 
     // Security: Validate HTTPS GitHub/GitLab URL only
-    if (!validateRepoUrl(repoUrl)) {
+    if (!validateRepoUrl(url)) {
       return NextResponse.json(
         { 
           error: 'Invalid repository URL',
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
     // Security: Sanitize input to prevent command injection
     let sanitizedUrl: string;
     try {
-      sanitizedUrl = sanitizeRepoUrl(repoUrl);
+      sanitizedUrl = sanitizeRepoUrl(url);
     } catch (sanitizeError: any) {
       return NextResponse.json(
         { error: 'Invalid repository URL format', details: sanitizeError.message },

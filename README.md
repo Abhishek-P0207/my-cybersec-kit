@@ -34,3 +34,9 @@ Backend API routes are located in `src/app/api/`. Example:
 pnpm build
 pnpm start
 ```
+
+So currently we have,
+1. Network scan
+2. Image Meta data
+3. Phishing attack detection
+4. URL vulnerability scan 

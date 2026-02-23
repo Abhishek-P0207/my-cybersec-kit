@@ -32,8 +32,9 @@ export async function POST(request: Request) {
     // Execute nmap command
     let stdout: string;
     try {
-      const { stdout: output } = await execAsync(`nmap -F ${cleantarget} -oX -`);
+      const { stdout: output } = await execAsync(`nmap -v ${target} -p- -oX -`);
       stdout = output;
+      console.log(`Nmap output: ${stdout}`);
     } catch (execError: any) {
       // Check if nmap is not installed
       if (execError.code === 127 || execError.message.includes('not found')) {

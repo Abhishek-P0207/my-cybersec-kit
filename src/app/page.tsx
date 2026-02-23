@@ -1,65 +1,132 @@
-import Image from "next/image";
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { 
+  ShieldCheck, 
+  ScanSearch, 
+  Binary, 
+  ArrowRight, 
+  History,
+  Activity
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="flex flex-col gap-6 p-2">
+      {/* 1. Hero / Welcome Section */}
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold tracking-tight">Security Dashboard</h1>
+        <p className="text-muted-foreground">
+          Welcome back. Select a tool to begin your security analysis.
+        </p>
+      </div>
+
+      {/* 2. Key Metrics (Mock Data for Visuals) */}
+      <div className="grid gap-4 md:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">System Status</CardTitle>
+            <Activity className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">Secure</div>
+            <p className="text-xs text-muted-foreground">All systems operational</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Scans</CardTitle>
+            <ScanSearch className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">128</div>
+            <p className="text-xs text-muted-foreground">+14% from last month</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Vulnerabilities</CardTitle>
+            <ShieldCheck className="h-4 w-4 text-orange-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">3</div>
+            <p className="text-xs text-muted-foreground">Requires attention</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* 3. Tool Selection Grid */}
+      <h2 className="text-lg font-semibold mt-4">Available Tools</h2>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        
+        {/* Tool 1: Scanner */}
+        <Link href="/tools/website_scanner" className="group">
+          <Card className="h-full transition-all hover:shadow-md hover:border-primary/50">
+            <CardHeader>
+              <div className="mb-2 h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <ScanSearch className="h-6 w-6 text-primary" />
+              </div>
+              <CardTitle>Vulnerability Scanner</CardTitle>
+              <CardDescription>
+                Scan websites for CVEs and security flaws.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="ghost" className="w-full justify-between group-hover:bg-primary group-hover:text-primary-foreground">
+                Launch Tool <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            </CardContent>
+          </Card>
+        </Link>
+
+        {/* Tool 2: Converter (Example) */}
+        <Link href="/tools/git_scanner" className="group">
+          <Card className="h-full transition-all hover:shadow-md hover:border-primary/50">
+            <CardHeader>
+              <div className="mb-2 h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
+                <Binary className="h-6 w-6 text-blue-600" />
+              </div>
+              <CardTitle>Image Metadata</CardTitle>
+              <CardDescription>
+                Extract the metadata from any image
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="ghost" className="w-full justify-between group-hover:bg-blue-600 group-hover:text-white">
+                Launch Tool <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            </CardContent>
+          </Card>
+        </Link>
+
+
+        {/* Tool 3: History / Logs (Placeholder) */}
+        <div className="group opacity-60 cursor-not-allowed">
+          <Card className="h-full bg-muted/50 border-dashed">
+            <CardHeader>
+              <div className="mb-2 h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
+                <History className="h-6 w-6 text-muted-foreground" />
+              </div>
+              <CardTitle>Audit Logs</CardTitle>
+              <CardDescription>
+                Review past scan history and reports.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" disabled className="w-full">
+                Coming Soon
+              </Button>
+            </CardContent>
+          </Card>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+
+      </div>
     </div>
   );
 }
