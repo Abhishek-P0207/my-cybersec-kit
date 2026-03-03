@@ -1,131 +1,74 @@
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { 
-  ShieldCheck, 
-  ScanSearch, 
-  Binary, 
-  ArrowRight, 
-  History,
-  Activity
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ShieldCheck, Sparkles, Lock, Zap } from "lucide-react";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex flex-col gap-6 p-2">
-      {/* 1. Hero / Welcome Section */}
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Security Dashboard</h1>
-        <p className="text-muted-foreground">
-          Welcome back. Select a tool to begin your security analysis.
-        </p>
-      </div>
+    <div className="min-h-screen flex flex-col">
+      {/* Hero Section */}
+      <div className="flex-1 flex items-center justify-center px-4">
+        <div className="max-w-5xl mx-auto text-center space-y-8">
+          {/* Logo */}
+          <div className="flex justify-center mb-8">
+            <div className="h-20 w-20 rounded-2xl bg-linear-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-2xl">
+              <ShieldCheck className="h-12 w-12 text-white" />
+            </div>
+          </div>
 
-      {/* 2. Key Metrics (Mock Data for Visuals) */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">System Status</CardTitle>
-            <Activity className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">Secure</div>
-            <p className="text-xs text-muted-foreground">All systems operational</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Scans</CardTitle>
-            <ScanSearch className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">128</div>
-            <p className="text-xs text-muted-foreground">+14% from last month</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Vulnerabilities</CardTitle>
-            <ShieldCheck className="h-4 w-4 text-orange-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">3</div>
-            <p className="text-xs text-muted-foreground">Requires attention</p>
-          </CardContent>
-        </Card>
-      </div>
+          {/* Main Heading */}
+          <div className="space-y-6">
+            <h1 className="text-6xl md:text-8xl font-bold tracking-tight">
+              <span className="block bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 dark:from-slate-100 dark:via-white dark:to-slate-100 bg-clip-text text-transparent">
+                Where Emotion
+              </span>
+              <span className="block bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mt-2">
+                Becomes Tangible
+              </span>
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Comprehensive security analysis tools designed for modern threats. 
+              Protect what matters most with enterprise-grade security.
+            </p>
+          </div>
 
-      {/* 3. Tool Selection Grid */}
-      <h2 className="text-lg font-semibold mt-4">Available Tools</h2>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        
-        {/* Tool 1: Scanner */}
-        <Link href="/tools/website_scanner" className="group">
-          <Card className="h-full transition-all hover:shadow-md hover:border-primary/50">
-            <CardHeader>
-              <div className="mb-2 h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                <ScanSearch className="h-6 w-6 text-primary" />
-              </div>
-              <CardTitle>Vulnerability Scanner</CardTitle>
-              <CardDescription>
-                Scan websites for CVEs and security flaws.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="ghost" className="w-full justify-between group-hover:bg-primary group-hover:text-primary-foreground">
-                Launch Tool <ArrowRight className="h-4 w-4 ml-2" />
+          {/* CTA Button */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+            <Link href="/dashboard">
+              <Button size="lg" className="text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all">
+                Get Started
+                <Sparkles className="ml-2 h-5 w-5" />
               </Button>
-            </CardContent>
-          </Card>
-        </Link>
+            </Link>
+          </div>
 
-        {/* Tool 2: Converter (Example) */}
-        <Link href="/tools/git_scanner" className="group">
-          <Card className="h-full transition-all hover:shadow-md hover:border-primary/50">
-            <CardHeader>
-              <div className="mb-2 h-10 w-10 rounded-lg bg-blue-500/10 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors">
-                <Binary className="h-6 w-6 text-blue-600" />
-              </div>
-              <CardTitle>Image Metadata</CardTitle>
-              <CardDescription>
-                Extract the metadata from any image
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="ghost" className="w-full justify-between group-hover:bg-blue-600 group-hover:text-white">
-                Launch Tool <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            </CardContent>
-          </Card>
-        </Link>
-
-
-        {/* Tool 3: History / Logs (Placeholder) */}
-        <div className="group opacity-60 cursor-not-allowed">
-          <Card className="h-full bg-muted/50 border-dashed">
-            <CardHeader>
-              <div className="mb-2 h-10 w-10 rounded-lg bg-muted flex items-center justify-center">
-                <History className="h-6 w-6 text-muted-foreground" />
-              </div>
-              <CardTitle>Audit Logs</CardTitle>
-              <CardDescription>
-                Review past scan history and reports.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="outline" disabled className="w-full">
-                Coming Soon
-              </Button>
-            </CardContent>
-          </Card>
+          {/* Features */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-16 max-w-4xl mx-auto">
+            <div className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all">
+              <Lock className="h-8 w-8 text-primary mb-4 mx-auto" />
+              <h3 className="font-semibold text-lg mb-2">Enterprise Security</h3>
+              <p className="text-sm text-muted-foreground">
+                Military-grade encryption and security protocols
+              </p>
+            </div>
+            
+            <div className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all">
+              <Zap className="h-8 w-8 text-primary mb-4 mx-auto" />
+              <h3 className="font-semibold text-lg mb-2">Lightning Fast</h3>
+              <p className="text-sm text-muted-foreground">
+                Real-time scanning and instant threat detection
+              </p>
+            </div>
+            
+            <div className="p-6 rounded-2xl bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all">
+              <ShieldCheck className="h-8 w-8 text-primary mb-4 mx-auto" />
+              <h3 className="font-semibold text-lg mb-2">Always Protected</h3>
+              <p className="text-sm text-muted-foreground">
+                24/7 monitoring and automated security updates
+              </p>
+            </div>
+          </div>
         </div>
-
       </div>
     </div>
   );

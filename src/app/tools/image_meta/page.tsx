@@ -1,22 +1,22 @@
-// components/tool-card.tsx
 "use client";
 
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ReportForm } from "@/components/tool-form";
-import { ReportViewer } from "@/components/gitReportViewer";
+import { ReportForm } from "@/components/image-metadata-form";
+import { ReportViewer } from "@/components/image-report-viewer";
 import axios from "axios";
 
 export default function ToolCard() {
-  const [results, setResults] = useState<any>(null); // Store report data here
+  const [results, setResults] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
-  // This function runs when the user clicks "Scan" in the child component
-  const handleScan = async (url: string) => {
+  const handleScan = async (file: File) => {
     setLoading(true);
     setResults(null);
-
-    axios.post("/api/forensics/metadata", { url })
+    const formData = new FormData();
+    formData.append("image", file);
+    
+    axios.post("/api/forensics/metadata", formData)
       .then((response) => {
         setResults(response.data);
       })

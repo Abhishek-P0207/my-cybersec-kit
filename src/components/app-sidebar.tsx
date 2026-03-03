@@ -14,16 +14,26 @@ import {
 } from "@/components/ui/sidebar"
 
 import { 
-  ShieldAlert
+  ShieldCheck,
+  Home
 } from "lucide-react";
 import Link from "next/link";
 
-// This is sample data.
 const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Tools",
+      title: "Home",
+      url: "/",
+      items: [
+        {
+          title: "Dashboard",
+          url: "/",
+          icon: Home,
+        },
+      ],
+    },
+    {
+      title: "Scanners",
       url: "#",
       items: [
         {
@@ -38,6 +48,12 @@ const data = {
           title: "Network Scanner",
           url: "/tools/network_scanner",
         },
+      ],
+    },
+    {
+      title: "Miscellaneous",
+      url: "#",
+      items: [
         {
           title: "Image Metadata Extractor",
           url: "/tools/image_meta",
@@ -48,55 +64,34 @@ const data = {
         },
       ],
     },
-    {
-      title: "Architecture",
-      url: "#",
-      items: [
-        {
-          title: "Accessibility",
-          url: "#",
-        },
-        {
-          title: "Fast Refresh",
-          url: "#",
-        },
-        {
-          title: "Next.js Compiler",
-          url: "#",
-        },
-        {
-          title: "Supported Browsers",
-          url: "#",
-        },
-        {
-          title: "Turbopack",
-          url: "#",
-        },
-      ],
-    },
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
-        <SidebarHeader>
-        <div className="flex flex-col gap-1 pt-5 text-center">
-          <h1 className="text-3xl font-bold leading-none">Cybersec Kit</h1>
+      <SidebarHeader>
+        <div className="flex items-center gap-3 pt-5 px-2">
+          <div className="h-10 w-10 rounded-lg bg-linear-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-md">
+            <ShieldCheck className="h-6 w-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold leading-none">Cybersec Kit</h1>
+            <p className="text-xs text-muted-foreground mt-0.5">Security Toolkit</p>
+          </div>
         </div>
       </SidebarHeader>
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
-                      <Link href={item.url}>
-                        <span>{item.title}</span>
+                {item.items.map((subItem) => (
+                  <SidebarMenuItem key={subItem.title}>
+                    <SidebarMenuButton asChild>
+                      <Link href={subItem.url}>
+                        <span>{subItem.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import { 
   ShieldAlert, 
   ShieldCheck,
@@ -18,7 +19,6 @@ import {
   Globe
 } from "lucide-react";
 
-// --- Types based on your PhishTank JSON ---
 interface PhishTankData {
   success: boolean;
   url: string;
@@ -45,144 +45,165 @@ export function Report({ data }: { data: PhishTankData }) {
   const { results, meta } = data.result;
   const isKnown = results.in_database;
   const isVerified = results.verified;
-  
-  // In PhishTank: 'valid' means it is currently an active phishing site.
-  // If in_database is true but valid is false, it's an offline/inactive threat.
   const isActiveThreat = isKnown && results.valid;
   const isPastThreat = isKnown && !results.valid;
 
-  // Determine the primary status UI
-  let statusColor = "text-green-500";
-  let statusBg = "bg-green-50 border-green-200 dark:bg-green-950/20";
+  let statusColor = "text-green-600 dark:text-green-400";
+  let statusBg = "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-900/50";
   let StatusIcon = ShieldCheck;
   let statusText = "Clean / Unknown";
+  let statusBadge = "secondary";
 
   if (isActiveThreat) {
-    statusColor = "text-red-600";
-    statusBg = "bg-red-50 border-red-200 dark:bg-red-950/20";
+    statusColor = "text-red-600 dark:text-red-400";
+    statusBg = "bg-red-50 border-red-200 dark:bg-red-950/20 dark:border-red-900/50";
     StatusIcon = ShieldAlert;
     statusText = "Active Phishing Threat";
+    statusBadge = "destructive";
   } else if (isPastThreat) {
-    statusColor = "text-orange-500";
-    statusBg = "bg-orange-50 border-orange-200 dark:bg-orange-950/20";
+    statusColor = "text-orange-600 dark:text-orange-400";
+    statusBg = "bg-orange-50 border-orange-200 dark:bg-orange-950/20 dark:border-orange-900/50";
     StatusIcon = ShieldQuestion;
     statusText = "Inactive / Past Threat";
+    statusBadge = "outline";
   }
 
   return (
-    <div className="flex flex-col gap-6 h-full min-h-0">
-      {/* 1. Summary Cards */}
+    <div className="flex flex-col gap-6 h-full">
+      {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <SummaryCard 
-          title="Threat Status" 
-          text={statusText} 
-          icon={<StatusIcon className={`h-4 w-4 ${statusColor}`} />} 
-          className={statusBg}
-        />
-        <SummaryCard 
-          title="In Database" 
-          text={isKnown ? "Yes" : "No"} 
-          icon={<Database className="h-4 w-4 text-blue-500" />} 
-        />
-        <SummaryCard 
-          title="Verified Status" 
-          text={isVerified ? "Community Verified" : "Unverified"} 
-          icon={<ShieldCheck className="h-4 w-4 text-purple-500" />} 
-        />
-        <SummaryCard 
-          title="Checked On" 
-          text={new Date(meta.timestamp).toLocaleDateString()} 
-          icon={<Calendar className="h-4 w-4 text-muted-foreground" />} 
-        />
+        <Card className={statusBg}>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <StatusIcon className={`h-4 w-4 ${statusColor}`} />
+              <CardTitle className="text-sm font-medium">Threat Status</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Badge variant={statusBadge as any} className="text-xs">{statusText}</Badge>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Database className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              <CardTitle className="text-sm font-medium">In Database</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Badge variant={isKnown ? "default" : "secondary"} className="text-xs">
+              {isKnown ? "Yes" : "No"}
+            </Badge>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+              <CardTitle className="text-sm font-medium">Verified Status</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Badge variant={isVerified ? "default" : "outline"} className="text-xs">
+              {isVerified ? "Verified" : "Unverified"}
+            </Badge>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Checked On</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm font-medium">
+              {new Date(meta.timestamp).toLocaleDateString()}
+            </p>
+          </CardContent>
+        </Card>
       </div>
 
-      {/* 2. Detailed URL Report */}
+      {/* Detailed Report */}
       <Card className="flex-1">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-primary" />
-            URL Analysis Details
-          </CardTitle>
-          <CardDescription>
-            Deep dive into the requested domain: <span className="font-mono text-primary break-all">{data.url}</span>
+            <CardTitle>URL Analysis Details</CardTitle>
+          </div>
+          <CardDescription className="break-all">
+            <span className="font-mono text-xs">{data.url}</span>
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
-            
-            {/* Contextual Alert based on status */}
-            <div className={`p-4 border rounded-lg flex items-start gap-3 ${statusBg}`}>
-              <StatusIcon className={`h-5 w-5 mt-0.5 ${statusColor}`} />
-              <div>
-                <h4 className={`font-semibold ${statusColor}`}>
-                  {isActiveThreat ? "Warning: Malicious Site Detected" : isPastThreat ? "Notice: Historical Threat Record" : "No Threat Detected"}
-                </h4>
-                <p className="text-sm mt-1 text-muted-foreground">
-                  {isActiveThreat 
-                    ? "This URL is actively confirmed as a phishing website by the community. Do not interact with it."
-                    : isPastThreat 
-                    ? "This URL was previously flagged as a phishing site but is currently marked as invalid/offline. Proceed with caution."
-                    : "This URL does not currently exist in the PhishTank database of known malicious sites."}
-                </p>
-              </div>
+        <CardContent className="space-y-6">
+          {/* Alert Box */}
+          <div className={`p-4 border rounded-lg flex items-start gap-3 ${statusBg}`}>
+            <StatusIcon className={`h-5 w-5 mt-0.5 shrink-0 ${statusColor}`} />
+            <div className="flex-1">
+              <h4 className={`font-semibold ${statusColor}`}>
+                {isActiveThreat 
+                  ? "Warning: Malicious Site Detected" 
+                  : isPastThreat 
+                  ? "Notice: Historical Threat Record" 
+                  : "No Threat Detected"}
+              </h4>
+              <p className="text-sm mt-1 text-muted-foreground">
+                {isActiveThreat 
+                  ? "This URL is actively confirmed as a phishing website. Do not interact with it."
+                  : isPastThreat 
+                  ? "This URL was previously flagged but is currently marked as invalid/offline. Proceed with caution."
+                  : "This URL does not exist in the PhishTank database of known malicious sites."}
+              </p>
             </div>
+          </div>
 
-            {/* PhishTank Specific Details (Only shows if it exists in the database) */}
-            {isKnown && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/30 p-4 rounded-lg border">
-                <div>
-                  <span className="text-xs font-semibold text-muted-foreground uppercase block mb-1">
+          {/* PhishTank Details */}
+          {isKnown && (
+            <>
+              <Separator />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase">
                     PhishTank ID
-                  </span>
-                  <div className="font-mono text-base font-medium">
+                  </p>
+                  <p className="font-mono text-base font-medium">
                     #{results.phish_id}
-                  </div>
+                  </p>
                 </div>
                 
                 {results.verified_at && (
-                  <div>
-                    <span className="text-xs font-semibold text-muted-foreground uppercase block mb-1">
+                  <div className="space-y-1">
+                    <p className="text-xs font-semibold text-muted-foreground uppercase">
                       Verification Date
-                    </span>
-                    <div className="text-base font-medium">
+                    </p>
+                    <p className="text-base font-medium">
                       {new Date(results.verified_at).toLocaleString()}
-                    </div>
-                  </div>
-                )}
-
-                {results.phish_detail_page && (
-                  <div className="md:col-span-2 pt-2 border-t">
-                    <a 
-                      href={results.phish_detail_page} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline"
-                    >
-                      View Full Community Report on PhishTank 
-                      <ExternalLink className="ml-1.5 h-3 w-3" />
-                    </a>
+                    </p>
                   </div>
                 )}
               </div>
-            )}
-          </div>
+
+              {results.phish_detail_page && (
+                <>
+                  <Separator />
+                  <a 
+                    href={results.phish_detail_page} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="inline-flex items-center text-sm font-medium text-primary hover:underline"
+                  >
+                    View Full Report on PhishTank 
+                    <ExternalLink className="ml-1.5 h-3 w-3" />
+                  </a>
+                </>
+              )}
+            </>
+          )}
         </CardContent>
       </Card>
-    </div>
-  );
-}
-
-// Small sub-component for the top stats
-function SummaryCard({ title, text, icon, className = "" }: any) {
-  return (
-    <div className={`p-4 rounded-xl border bg-card text-card-foreground shadow-sm ${className}`}>
-      <div className="flex items-center gap-2 mb-2">
-        {icon}
-        <span className="text-sm font-medium text-muted-foreground">{title}</span>
-      </div>
-      <div className="text-lg font-bold tracking-tight">
-        {text}
-      </div>
     </div>
   );
 }

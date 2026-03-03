@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     }
 
     // Extract file from FormData
-    const file = formData.get('file');
+    const file = formData.get('image');
 
     // Validate file exists
     if (!file) {
@@ -100,13 +100,11 @@ export async function POST(request: Request) {
       const { stdout: output } = await execAsync(
         `exiftool -json -g "${tempFilePath}"`,
         { 
-          maxBuffer: 5 * 1024 * 1024, // 5MB buffer
-          timeout: 30000 // 30 second timeout
+          timeout: 30000
         }
       );
       stdout = output;
     } catch (execError: any) {
-      // Check if ExifTool is not installed
       if (execError.code === 127 || execError.message.includes('not found')) {
         return NextResponse.json(
           { error: 'ExifTool is not installed on this system' },
@@ -114,7 +112,6 @@ export async function POST(request: Request) {
         );
       }
 
-      // Check for timeout
       if (execError.killed || execError.message.includes('timeout')) {
         return NextResponse.json(
           { error: 'Metadata extraction timeout' },
@@ -122,7 +119,6 @@ export async function POST(request: Request) {
         );
       }
 
-      // Generic execution error
       return NextResponse.json(
         { 
           error: 'Failed to extract metadata',
@@ -132,7 +128,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Parse JSON output
     let results: ExifToolResult[];
     try {
       results = JSON.parse(stdout);
@@ -143,7 +138,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // ExifTool returns an array, get the first object
     if (!Array.isArray(results) || results.length === 0) {
       return NextResponse.json(
         { error: 'No metadata found in file' },
