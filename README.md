@@ -1,6 +1,20 @@
-# My Security Kit
+# Cybersec Kit
 
-A full-stack Next.js application for your essential security needs.
+A modern, elegant security toolkit built with Next.js and shadcn/ui. Features a beautiful landing page and comprehensive security analysis tools.
+
+## Features
+
+- 🎨 Beautiful landing page with gradient design
+- 🌓 Dark mode support with theme toggle
+- 🔐 5 Security tools:
+  1. Vulnerability Scanner
+  2. Git Repository Scanner
+  3. Image Metadata Extractor
+  4. Network Scanner
+  5. Phishing Detector
+- 📊 Security dashboard with metrics
+- 👤 User profile and settings
+- 🎯 Clean, simplified sidebar navigation
 
 ## Getting Started
 
@@ -14,29 +28,28 @@ Run the development server:
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) to see the landing page.
+Dashboard is at [http://localhost:3000/dashboard](http://localhost:3000/dashboard).
 
-## API Routes
+## Project Structure
 
-Backend API routes are located in `src/app/api/`. Example:
-- `GET /api/health` - Health check endpoint
+- `/` - Landing page
+- `/dashboard` - Main security dashboard
+- `/tools/*` - Individual security tools
+- `/settings` - User settings and preferences
 
-## Development
+## Tech Stack
 
-- **Frontend**: Add components in `src/components/`, pages in `src/app/`
-- **Backend**: Add API routes in `src/app/api/`
-- **Shared Logic**: Add utilities in `src/lib/`, types in `src/types/`
-- **Hooks**: Add custom hooks in `src/hooks/`
+- Next.js 16
+- React 19
+- shadcn/ui components
+- Tailwind CSS v4
+- TypeScript
+- next-themes for dark mode
 
 ## Build
 
 ```bash
 pnpm build
 pnpm start
-```
-
-So currently we have,
-1. Network scan
-2. Image Meta data
-3. Phishing attack detection
-4. URL vulnerability scan 
+``` 
