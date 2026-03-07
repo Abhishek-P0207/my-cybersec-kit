@@ -39,7 +39,7 @@ export default function ToolCard() {
         <CardTitle>Phishing Site Detection</CardTitle>
         <CardDescription>Enter a URL to check against phishing databases</CardDescription>
       </CardHeader>
-      
+
       <div className="px-6 py-4 border-b bg-muted/30">
         <ReportForm onScan={handleScan} isLoading={loading} />
       </div>
@@ -59,20 +59,13 @@ export default function ToolCard() {
                   <FileText className="h-4 w-4" />
                   Analysis Report
                 </TabsTrigger>
-                <TabsTrigger value="ai" className="flex items-center gap-2">
-                  <Bot className="h-4 w-4" />
-                  AI Assistant
-                </TabsTrigger>
               </TabsList>
             </div>
-            
+
             <TabsContent value="report" className="flex-1 overflow-auto p-6 m-0">
               <Report data={results} />
             </TabsContent>
-            
-            <TabsContent value="ai" className="flex-1 overflow-hidden p-6 m-0">
-              <AIAssistant scanData={results} context="phishing detection" />
-            </TabsContent>
+
           </Tabs>
         ) : (
           <div className="flex items-center justify-center h-full text-muted-foreground p-6">

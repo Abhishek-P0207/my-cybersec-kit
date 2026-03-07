@@ -54,10 +54,12 @@ export function AIAssistant({
     setIsLoading(true);
 
     try {
-      const response = await axios.post("/api/bot", { prompt: query });
+      const response = await axios.post("http://localhost:8000/api/chat", {
+        message: query,
+      });
       const botMessage: Message = {
         role: "assistant",
-        content: response.data.output,
+        content: response.data.answer,
         timestamp: new Date(),
       };
 
@@ -75,7 +77,7 @@ export function AIAssistant({
   };
 
   return (
-    <div className="flex flex-col h-full max-h-[600px]">
+    <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto pr-4 space-y-4 mb-4">
         {messages.map((message, index) => (
           <div
@@ -177,7 +179,7 @@ export function AIAssistant({
             )}
           </div>
         ))}
-        
+
         {isLoading && (
           <div className="flex gap-3 justify-start">
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
@@ -192,7 +194,7 @@ export function AIAssistant({
             </div>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
 
